@@ -1,11 +1,13 @@
 package com.example.fallingwords.ui.start
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.fallingwords.R
+import kotlinx.android.synthetic.main.fragment_start.*
 
 class StartFragment : Fragment() {
 
@@ -21,9 +23,14 @@ class StartFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_start, container, false)
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() =
-            StartFragment()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initListener()
+    }
+
+    private fun initListener() {
+        startButton.setOnClickListener {
+            findNavController().navigate(R.id.gameFragment)
+        }
     }
 }
