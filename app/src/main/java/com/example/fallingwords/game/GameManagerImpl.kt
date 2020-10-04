@@ -7,9 +7,14 @@ import com.example.fallingwords.data.model.Word
 object GameManagerImpl : GameManager {
 
     private const val WORDS_PER_SESSION = 10
-    private const val TOTAL_ANSWER_OPTIONS = 3
-
+    private const val TOTAL_ANSWER_OPTIONS = 4
     var session: Session? = null
+    var counter = 0
+
+    override fun getGameSession(): Session? {
+        return session
+    }
+
 
     override fun startGame(words: List<Word>) {
         val wordsPerSession = if (words.size >= WORDS_PER_SESSION) WORDS_PER_SESSION else words.size
@@ -21,12 +26,10 @@ object GameManagerImpl : GameManager {
     }
 
     override fun getNewWord(): Word? {
-
         //find the words which are not yet shown and select randomly
         val word = session?.availableWords?.filter { !it.isShown }?.random()
 
         //creating answer options with one correct answer
-
         var answers = arrayListOf<String?>()
         answers.add(word?.text_spa)
         var filterAnswers = session?.availableWords?.filter { it.text_spa != word?.text_spa }
@@ -38,11 +41,23 @@ object GameManagerImpl : GameManager {
 
         // selecting random answer
         word?.randomTranslatedWord = answers.random()
+        counter++
+        if (counter >= WORDS_PER_SESSION) {
+            setGameOver()
+        }
         return word
     }
 
     override fun markWordUsed(word: Word) {
         session?.availableWords?.first { it == word }?.apply { isShown = true }
+    }
+
+    override fun setGameOver() {
+        session?.isGameOver = true
+    }
+
+    override fun isGameOver(): Boolean {
+        return session?.isGameOver ?: false
     }
 
 
