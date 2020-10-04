@@ -11,8 +11,8 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.LinearInterpolator
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.fallingwords.R
 import com.example.fallingwords.ui.MainViewModel
 import com.example.fallingwords.util.UserResponse
@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.fragment_game.*
 class GameFragment : Fragment() {
 
     private var objectFallingAnimator: ObjectAnimator? = null
-    private val viewModel: MainViewModel by activityViewModels()
+    lateinit var viewModel: MainViewModel
 
     private val wordAnimationScaleListener = object : Animation.AnimationListener {
         override fun onAnimationStart(p0: Animation?) {
@@ -32,6 +32,20 @@ class GameFragment : Fragment() {
 
         override fun onAnimationEnd(p0: Animation?) {
             startFallingAnswer()
+        }
+
+        override fun onAnimationRepeat(p0: Animation?) {
+            //do nothing
+        }
+    }
+
+    private val answerImgAnimationScaleListener = object : Animation.AnimationListener {
+        override fun onAnimationStart(p0: Animation?) {
+        }
+
+        override fun onAnimationEnd(p0: Animation?) {
+            img_answer.visibility = View.GONE
+            viewModel.showNewWord()
         }
 
         override fun onAnimationRepeat(p0: Animation?) {
@@ -53,6 +67,7 @@ class GameFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -63,8 +78,9 @@ class GameFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_game, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initObserver()
         initListener()
         viewModel.startGame()
@@ -79,11 +95,16 @@ class GameFragment : Fragment() {
         btn_wrong.setOnClickListener {
             viewModel.onWrongButtonClicked()
         }
+
+        btn_restart.setOnClickListener {
+            onGameRestart()
+        }
     }
 
     private fun initObserver() {
 
         viewModel.activeWord.observe(viewLifecycleOwner, Observer {
+            toggleButtonState(true)
             showNewWord()
         })
 
@@ -92,25 +113,19 @@ class GameFragment : Fragment() {
         })
 
         viewModel.userSelectedAnswer.observe(viewLifecycleOwner, Observer {
+            toggleButtonState(false)
             stopFallingAnimation()
             viewModel.getSession()
-            viewModel.showNewWord()
             when (it) {
-                UserResponse.CORRECT -> {
-
-                }
-
-                UserResponse.WRONG -> {
-
-                }
-
-                UserResponse.UNATTEMPTED -> {
-
-                }
+                UserResponse.CORRECT -> img_answer.setImageResource(R.drawable.ic_correct)
+                UserResponse.WRONG -> img_answer.setImageResource(R.drawable.ic_wrong)
+                UserResponse.UNATTEMPTED -> img_answer.setImageResource(R.drawable.ic_wrong)
             }
-
-            viewModel.showNewWord()
-
+            val animation: Animation =
+                AnimationUtils.loadAnimation(requireContext(), R.anim.scale_up)
+            animation.setAnimationListener(answerImgAnimationScaleListener)
+            img_answer.visibility = View.VISIBLE
+            img_answer.startAnimation(animation)
         })
 
         viewModel.session.observe(viewLifecycleOwner, Observer { session ->
@@ -122,12 +137,37 @@ class GameFragment : Fragment() {
         })
 
         viewModel.isGameOver.observe(viewLifecycleOwner, Observer {
-            // todo show result 
+            onGameOver()
         })
 
     }
 
+    private fun onGameRestart() {
+        action_view.visibility = View.VISIBLE
+        toggleButtonState(true)
+        layout_restart.visibility = View.GONE
+        viewModel.restartGame()
+        viewModel.showNewWord()
+        viewModel.getSession()
+    }
+
+    private fun onGameOver() {
+        word.visibility = View.GONE
+        falling_word.visibility = View.GONE
+        val animation: Animation =
+            AnimationUtils.loadAnimation(context, R.anim.slide_up)
+        layout_restart.visibility = View.VISIBLE
+        layout_restart.startAnimation(animation)
+        action_view.visibility = View.GONE
+    }
+
+    private fun toggleButtonState(isClickable: Boolean) {
+        btn_wrong.isClickable = isClickable
+        btn_correct.isClickable = isClickable
+    }
+
     private fun showNewWord() {
+        word.visibility = View.VISIBLE
         word.text = viewModel.activeWord.value?.text_eng
         val animation: Animation = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_up)
         animation.setAnimationListener(wordAnimationScaleListener)
@@ -154,6 +194,7 @@ class GameFragment : Fragment() {
     }
 
     private fun startFallingAnswer() {
+        falling_word.visibility = View.VISIBLE
         falling_word.text = viewModel.activeWord.value?.randomTranslatedWord
         val yValueStart = score_view.height
         val yValueEnd: Int =

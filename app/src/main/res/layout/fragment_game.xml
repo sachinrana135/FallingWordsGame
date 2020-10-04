@@ -43,6 +43,37 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Sample Text" />
 
+    <LinearLayout
+        android:id="@+id/layout_restart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:animateLayoutChanges="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/word">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_game_over"
+            android:textSize="@dimen/font_xxlarge">
+
+        </TextView>
+
+        <Button
+            android:id="@+id/btn_restart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_restart">
+
+        </Button>
+    </LinearLayout>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/action_view"
@@ -50,6 +81,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorAccent"
         android:padding="@dimen/spacing_small"
+        android:animateLayoutChanges="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -92,6 +124,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/score_view"
         tools:text="Falling word" />
+
+    <ImageView
+        android:id="@+id/img_answer"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="@dimen/spacing_xhuge"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/word"
+        tools:src="@drawable/ic_correct" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

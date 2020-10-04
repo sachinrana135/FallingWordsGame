@@ -30,15 +30,22 @@ class MainViewModel : ViewModel() {
     val isGameOver: LiveData<Boolean?> = _isGameOver
 
     fun startGame() {
+        if (gameManager.getGameSession() == null) {
+            val words = useCase.getAllWords()
+            gameManager.startGame(words)
+        }
+    }
+
+    fun restartGame() {
         val words = useCase.getAllWords()
         gameManager.startGame(words)
-        showNewWord()
     }
 
     fun showNewWord() {
         if (!gameManager.isGameOver()) {
             _activeWord.value = gameManager.getNewWord()
         } else {
+            gameManager.endGame()
             _isGameOver.value = true
         }
     }
@@ -60,6 +67,7 @@ class MainViewModel : ViewModel() {
 
     fun stopTimer() {
         timer?.cancel()
+
     }
 
     fun onCorrectButtonClicked() {

@@ -15,8 +15,6 @@ interface GameManager {
 
     fun markWordUsed(word: Word)
 
-    fun setGameOver()
-
     fun isGameOver(): Boolean
 
 }

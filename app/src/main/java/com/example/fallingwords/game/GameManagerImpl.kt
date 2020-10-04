@@ -9,7 +9,6 @@ object GameManagerImpl : GameManager {
     private const val WORDS_PER_SESSION = 10
     private const val TOTAL_ANSWER_OPTIONS = 4
     var session: Session? = null
-    var counter = 0
 
     override fun getGameSession(): Session? {
         return session
@@ -41,10 +40,6 @@ object GameManagerImpl : GameManager {
 
         // selecting random answer
         word?.randomTranslatedWord = answers.random()
-        counter++
-        if (counter >= WORDS_PER_SESSION) {
-            setGameOver()
-        }
         return word
     }
 
@@ -52,12 +47,9 @@ object GameManagerImpl : GameManager {
         session?.availableWords?.first { it == word }?.apply { isShown = true }
     }
 
-    override fun setGameOver() {
-        session?.isGameOver = true
-    }
 
     override fun isGameOver(): Boolean {
-        return session?.isGameOver ?: false
+        return session?.attempted!! >= WORDS_PER_SESSION
     }
 
 
