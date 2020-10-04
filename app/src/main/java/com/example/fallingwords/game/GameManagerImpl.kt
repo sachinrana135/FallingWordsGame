@@ -7,7 +7,8 @@ import com.example.fallingwords.data.model.Word
 object GameManagerImpl : GameManager {
 
     private const val WORDS_PER_SESSION = 10
-    private const val TOTAL_ANSWER_OPTIONS = 4
+    private const val TOTAL_ANSWER_OPTIONS = 3
+    var wordsPerSession = 0
     var session: Session? = null
 
     override fun getGameSession(): Session? {
@@ -16,7 +17,7 @@ object GameManagerImpl : GameManager {
 
 
     override fun startGame(words: List<Word>) {
-        val wordsPerSession = if (words.size >= WORDS_PER_SESSION) WORDS_PER_SESSION else words.size
+        wordsPerSession = if (words.size >= WORDS_PER_SESSION) WORDS_PER_SESSION else words.size
         session = Session(WordsPerSession = wordsPerSession, availableWords = words)
     }
 
@@ -49,7 +50,7 @@ object GameManagerImpl : GameManager {
 
 
     override fun isGameOver(): Boolean {
-        return session?.attempted!! >= WORDS_PER_SESSION
+        return session?.attempted!! >= wordsPerSession
     }
 
 

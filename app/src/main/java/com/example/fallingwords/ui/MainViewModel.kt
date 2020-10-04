@@ -13,10 +13,11 @@ import com.example.fallingwords.util.UserResponse
 import com.example.fallingwords.util.WORD_FALLING_DURATION
 
 
-class MainViewModel : ViewModel() {
+class MainViewModel(
+    val gameManager: GameManager = GameManagerImpl,
+    val useCase: WordUseCase = WordUseCase()
+) : ViewModel() {
 
-    private val gameManager = GameManagerImpl as GameManager
-    private val useCase by lazy { WordUseCase() }
     private var timer: CountDownTimer? = null
     private var _activeWord = MutableLiveData<Word?>()
     val activeWord: LiveData<Word?> = _activeWord
@@ -67,7 +68,6 @@ class MainViewModel : ViewModel() {
 
     fun stopTimer() {
         timer?.cancel()
-
     }
 
     fun onCorrectButtonClicked() {
@@ -78,8 +78,6 @@ class MainViewModel : ViewModel() {
         } else {
             _userSelectedAnswer.value = UserResponse.WRONG
         }
-
-        _session.value = gameManager.getGameSession()
     }
 
     fun onWrongButtonClicked() {
