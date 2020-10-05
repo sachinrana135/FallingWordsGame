@@ -42,3 +42,5 @@ If the user doesn't take any action and word get fallen out at bottom of screen,
  - If the answer is wrong, correct answer should be shown to user by some visual. It will help user to learn the translations.
  
 ## Video
+
+<img src="https://github.com/sachinrana135/FallingWordsGame/blob/main/Falling_word.gif" width="240" height="427">
