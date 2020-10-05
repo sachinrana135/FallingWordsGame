@@ -152,6 +152,7 @@ class GameFragment : Fragment() {
     }
 
     private fun onGameOver() {
+        word.clearAnimation()
         word.visibility = View.GONE
         falling_word.visibility = View.GONE
         val animation: Animation =
@@ -159,6 +160,7 @@ class GameFragment : Fragment() {
         layout_restart.visibility = View.VISIBLE
         layout_restart.startAnimation(animation)
         action_view.visibility = View.GONE
+
     }
 
     private fun toggleButtonState(isClickable: Boolean) {

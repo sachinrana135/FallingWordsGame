@@ -20,6 +20,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/text_words"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/font_large"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -28,6 +31,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/txt_score"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/font_large"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,8 +45,9 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="@dimen/spacing_xhuge"
+        android:textColor="@color/colorPrimaryDark"
         tools:text="Sample Text" />
 
     <LinearLayout
@@ -61,6 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/text_game_over"
+            android:textColor="@color/colorPrimary"
             android:textSize="@dimen/font_xxlarge">
 
         </TextView>
@@ -69,7 +77,10 @@
             android:id="@+id/btn_restart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/text_restart">
+            android:background="@color/colorAccent"
+            android:padding="@dimen/spacing_small"
+            android:text="@string/text_restart"
+            android:textColor="@android:color/white">
 
         </Button>
     </LinearLayout>
@@ -90,8 +101,9 @@
             android:id="@+id/btn_wrong"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/holo_red_light"
+            android:background="#F44336"
             android:text="@string/text_wrong"
+            android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -100,6 +112,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/font_xxlarge"
+            android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -109,8 +122,9 @@
             android:id="@+id/btn_correct"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/holo_green_light"
+            android:background="#4CAF50"
             android:text="@string/text_correct"
+            android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -120,9 +134,12 @@
         android:id="@+id/falling_word"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="@dimen/spacing_large"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/font_xlarge"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/score_view"
+        android:textStyle="bold"
         tools:text="Falling word" />
 
     <ImageView

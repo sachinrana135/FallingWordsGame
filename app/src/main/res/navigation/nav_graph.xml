@@ -19,14 +19,6 @@
         android:name="com.example.fallingwords.ui.game.GameFragment"
         android:label="gameFragment"
         tools:layout="@layout/fragment_game">
-        <action
-            android:id="@+id/action_gameFragment_to_resultFragment"
-            app:destination="@id/resultFragment" />
     </fragment>
 
-    <fragment
-        android:id="@+id/resultFragment"
-        android:name="com.example.fallingwords.ui.result.ResultFragment"
-        android:label="resultFragment"
-        tools:layout="@layout/fragment_result" />
 </navigation>
